@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    My login page
-    My namea is ritk
-    
+    <head>
+        <link rel="stylesheet" href="/static/styles/main.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <title>Signup</title>
+    </head>
+    <body>
+        <div class="center"><h1>Welcome to Quiz Master</h1></div>
+            <div class="center"><h3> Login </h3></div>
+            <form action="/login" method="POST">
+                <div class="input_form1">
+                    <div class="mb-3">
+                        <label for="user_name" class="form-label">Username(E-Mail)</label>
+                        <input type="email" class="form-control" name="user_name" id="user_name" placeholder="example@email.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        Create new user ?   <a href ="/register">Register</a>
+                        <div class="err_msg">{{msg}}</div>
+                        <div class="err_msg1">{{msg1}}</div>
+                    </div>
+                </div>
+            </form> 
 </body>
 </html>
