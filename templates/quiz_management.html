@@ -1,0 +1,53 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+    <div class="container">
+        {% if chapter_wise_quizzes %}
+        <div class="row">
+            {% for chapter, quizzes in chapter_wise_quizzes.items() %}
+                {% for quiz in quizzes %} 
+                <div class="col">
+                    <div class="card" style="width: 20rem">
+                        <div class="card-body">
+                            <h4 class="center1">
+                                <a href="/edit_quiz/{{ quiz.id }}/{{ name }}">
+                                    Quiz ({{ chapter.name }}) 
+                                </a>
+                            </h4>
+                            
+                            {% if quiz.questions %}
+                            <table class="my_table">
+                                <tr>
+                                    <th>Q. No.</th>
+                                    <th>Action</th>  
+                                </tr>
+                                {% for question in quiz.questions %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <a href="/edit_question/{{ question.id }}/{{ name }}" class="btn btn-sm btn-secondary">Edit</a>
+                                        <a href="/delete_question/{{ question.id }}/{{ name }}" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            {% else %}
+                                <p>No questions available.</p>
+                            {% endif %}
+                            
+                            <div class="center1">
+                                <a href="/add_question/{{ quiz.id }}/{{ name }}" class="btn btn-sm btn-primary">+ Add Question</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% else %}
+            <h3 class="center">No quizzes available right now.</h3>
+        {% endif %}
+    </div>
+    <div class="center">
+        <a href="/add_quiz/{{ name }}" class="btn btn-primary">+ Add Quiz</a>
+    </div>
+{% endblock %}

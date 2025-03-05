@@ -1,0 +1,23 @@
+{%extends "admin_layout.html"%} <!--Inherited all features-->
+{%block content%}
+        {%if subject%}
+            <div class="center"><h3> Edit Subject </h3></div>
+            <form action="/edit_subject/{{subject.id}}/{{name}}" method="POST">
+            <div class="input_form">
+                <div class="mb-3">
+                    <label for="sname" class="form-label">Name</label>
+                    <input type="text" class="form-control" name="sname"id="sname" value="{{subject.name}}" required >
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="description"id="description" value="{{subject.description}}" required >
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href ="/delete_subject/{{subject.id}}/{{name}}" type="button" class="btn btn-danger"> Delete</a>
+                    <a href ="/admin/{{name}}" type="button" class="btn btn-primary"> Cancel</a>
+                </div>
+            </form>
+            </div>
+        {%endif%}
+{%endblock%}

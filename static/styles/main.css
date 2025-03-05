@@ -10,7 +10,7 @@
     padding: 50px;
     border-radius: 10px;
     color:rgb(70, 70, 70);
-    background-color: #f9f9f9;
+    background-color: #f6f6f6;
     width: 40%;
     margin: auto;
     font-size:20px;
@@ -31,7 +31,7 @@
     background-color: #065dd7;
     color: white;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 16px;
     font-weight: bold;
     font-family: Arial, sans-serif;
@@ -48,6 +48,7 @@
     width: 500px;
     height: 290px;
     margin: auto;
+    background-color: #f6f6f6;
     margin-top: 20px;
     padding: 10px;
     border-radius: 10px;
@@ -62,6 +63,7 @@
     width: 600px;
     height: 480px;
     margin: auto;
+    background-color: #f6f6f6;
     margin-top: 20px;
     padding: 10px;
     border-radius: 10px;
@@ -87,4 +89,78 @@
     color:rgb(106, 111, 4);
     font-style: italic; 
     font-weight: 550;
+}
+
+.my_panel{
+    width: 80%;
+    margin: auto;
+    height: auto;
+    border: 1px solid rgb(49, 4, 4);
+    border-radius: 10px;
+    background-color: #eeeeee;
+}
+
+
+.custom-nav-link {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 50px;
+    color: white !important
+    
+}
+
+.search-bar {
+    width: 300px;
+    margin:auto;
+}
+
+.welcome-text {
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 20px; 
+    color: rgba(217, 217, 217, 0.997) !important
+}
+
+.input_form{
+    border: 1px solid rgb(1, 1, 1);
+    width: 500px;
+    height: auto;
+    margin: auto;
+    background-color: #f6f6f6;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight:650;
+    text-align: justify;
+
+}
+
+.my_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.my_table th, 
+.my_table td {
+    padding: auto;
+    text-align: left;
+}
+
+.my_table th {
+    background-color: #f2f2f2;
+}
+
+.card {
+    padding: 2px;
+    border-radius: 9px !important;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.center1 {
+    text-align:center;
+    margin:auto;
+    padding: 10px;
 }
