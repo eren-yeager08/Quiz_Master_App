@@ -341,7 +341,6 @@ def get_admin_summary():
     plt.bar(x_names, y_scores, color="blue" , width=0.4)
     plt.xlabel("Subjects",fontsize=14, fontweight="bold")
     plt.ylabel("Top Score",fontsize=14, fontweight="bold")
-    plt.title("Top Scores Per Subject (Admin Summary)",fontsize=14, fontweight="bold")
     plt.ylim(0, max(y_scores) + 2) 
     return plt  
 

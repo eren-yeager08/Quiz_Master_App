@@ -1,0 +1,15 @@
+{% extends "user_layout.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h5 class="card-subtitle mb-2 text-muted">User's Overall Summary</h5>
+                    <img src="{{ url_for('static', filename='images/user_summary.jpeg') }}" width="auto" height="auto" alt="User Summary Chart">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
