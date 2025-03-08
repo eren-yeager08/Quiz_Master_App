@@ -1,31 +1,55 @@
-{%extends "user_layout.html"%} <!--Inherited all features-->
-{%block content%}
-        {%if theatres%}
-            {%for theatre in theatres%}
-                {%if theatre.shows%}
-                    <div class="outer_box">
-                        <h4>{{ theatre.name }}</h4>
-                        <div class="container">
-                            <div class="row">
-                                {%for show in theatre.shows%}
-                                    {%if show.date_time >= dt_time_now%}
-                                        <div class="col">
-                                            <div class="card" style="width: 18rem;">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">{{show.name}}</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted">{{show.tags}}, Show Time:{{show.date_time}}</h6>
-                                                    <a href ="/book_ticket/{{uid}}/{{show.id}}/{{name}}" class="btn btn-outline-primary">Book</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {%endif%}
-                                {%endfor%}
-                            </div>           
-                        </div>
+{% extends "user_layout.html" %} <!-- Inherited layout -->
+{% block content %}
+    <div class="container">
+       
+        {% if quizzes %}
+        <div class="row">
+            <div class="col">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="text-center">Upcoming Quizzes</h3>
+
+                        <table class="my_table1">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Subject</th>
+                                    <th>Chapter</th>
+                                    <th>No. of Questions</th>
+                                    <th>Quiz Date</th>
+                                    <th>Time Duration (HH:MM)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for quiz in quizzes %}
+                                {%if quiz.date_of_quiz >= dt_time_now%}
+                                {% if quiz.no_of_questions > 0 %}
+
+                       
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ quiz.chapter.subject.name }}</td> 
+                                    <td>{{ quiz.chapter.name }}</td>
+                                    <td>{{ quiz.no_of_questions }}</td>
+                                    <td>{{ quiz.date_of_quiz }}</td>
+                                    <td>{{ quiz.time_duration }}</td>
+                                    <td>
+                                        <a href="/start_quiz/{{quiz.id}}/{{user.id}}/{{name}}" 
+                                        class="btn btn-md btn-success px-3 py-2">Start</a>
+                                    </td>
+                                </tr>
+                                {%endif%}
+                                {%endif%}
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                {%endif%}
-            {%endfor%}
-        {%else%}  
-            <h3 class="center">Sorry, no quizzes are available!!!</h3> 
-        {%endif%}
-{%endblock%}
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <h3 class="text-center mt-4">No quizzes available at the moment. Please check back later!</h3>
+        {% endif %}
+    </div>
+{% endblock %}

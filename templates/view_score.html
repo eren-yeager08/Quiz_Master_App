@@ -1,0 +1,43 @@
+{% extends "user_layout.html" %}
+{% block content %}
+    <div class="container">
+        {% if scores %}
+        <div class="row">
+            <div class="col">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h3 class="text-center">Your Attempted Quiz Scores</h3>
+                        <table class="my_table1">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Subject Name - chapter</th>
+                                    <th>Quiz ID</th>
+                                    <th>No. of Questions</th>
+                                    <th>Attempted Date and Time</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for score in scores %}
+                                {% set quiz = quizzes | selectattr("id", "equalto", score.quiz_id) | first %}
+                                {% if quiz %}
+                                <tr>
+                                    <td>{{ quiz.chapter.subject.name }} - {{ quiz.chapter.name }}</td> 
+                                    <td>{{ loop.index }}</td>        
+                                    <td>{{ quiz.no_of_questions }}</td>
+                                    <td>{{ score.timestamp.strftime("%Y-%m-%d %H:%M") }}</td>
+                                    <td>{{ score.total_score }} out of {{ quiz.no_of_questions}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <h3 class="text-center mt-4">You haven't attempted any quizzes yet.</h3>
+        {% endif %}
+    </div>
+{% endblock %}

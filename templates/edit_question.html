@@ -9,6 +9,10 @@
                     <textarea class="form-control" name="question_statement" id="question_statement" required>{{ question.question_statement }}</textarea>
                 </div>
                 <div class="mb-3">
+                    <label for="question_type" class="form-label">Question_type</label>
+                    <input type="text" class="form-control" name="question_type" id="question_type" value="{{question.question_type}}" required>
+                </div>
+                <div class="mb-3">
                     <label for="option1" class="form-label">Option 1</label>
                     <input type="text" class="form-control" name="option1" id="option1" value="{{ question.option1 }}" required>
                 </div>

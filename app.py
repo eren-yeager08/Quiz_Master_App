@@ -1,6 +1,7 @@
 # Starting of the application
 from flask import Flask
 from models.models import db
+import os
 
 app = None
 
@@ -14,6 +15,9 @@ def setup_app():
 
 # Call the function
 setup_app()
+
+app.config["SECRET_KEY"] = os.urandom(24)  # Generates a random secret key
+
 
 from controllers.controllers import *
 

@@ -78,7 +78,6 @@
     margin-top: 12px;
     font-size: 19px;
     color:rgb(234, 10, 58);
-    font-style: italic; 
     font-weight: 550; 
 }
 
@@ -86,8 +85,7 @@
     text-align: center;
     margin-top: 12px;
     font-size: 19px;
-    color:rgb(106, 111, 4);
-    font-style: italic; 
+    color:rgb(28, 212, 22);
     font-weight: 550;
 }
 
@@ -141,14 +139,31 @@
     border-collapse: collapse;
 }
 
-.my_table th, 
+
 .my_table td {
-    padding: auto;
+    padding: 4px;
     text-align: left;
 }
 
 .my_table th {
     background-color: #f2f2f2;
+}
+
+.my_table1 {
+    width: 100%;
+    border-collapse: collapse;
+}
+ 
+.my_table1 td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid rgba(181, 181, 181, 0.598);
+}
+
+.my_table1 th {
+    background-color: #f2f2f2;
+    border: 1px solid rgba(181, 181, 181, 0.598);
+
 }
 
 .card {

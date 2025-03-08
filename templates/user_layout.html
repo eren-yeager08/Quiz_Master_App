@@ -10,29 +10,27 @@
             <div class="center"><h1>Quiz Master</h1></div>
                 <nav class="navbar navbar-expand-lg navbar-light" style="background-image: linear-gradient(to right, rgb(1, 63, 71), rgb(35, 60, 153))">
                     <div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarText">
-                        <!-- Centered Navbar Links -->
                         <ul class="navbar-nav mx-auto text-center">
                             <li class="nav-item">
-                                <a class="nav-link custom-nav-link" href="#">Home</a>
+                                <a class="nav-link custom-nav-link" href="/user/{{user.id}}/{{name}}">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link custom-nav-link" href="#">Scores</a>
+                                <a class="nav-link custom-nav-link" href="/view_score/{{user.id}}/{{name}}">Scores</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active custom-nav-link" href="/user_summary">Summary</a>
+                                <a class="nav-link active custom-nav-link" href="/user_summary/{{user.id}}/{{name}}">Summary</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active custom-nav-link" href="/login">Logout</a>
                             </li>
                         </ul>
                 
-                        <!-- Centered Search Bar -->
+                    
                         <form class="d-flex mx-auto search-bar" method="POST" action="/search/{{name}}">
                             <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search_txt" id="search_txt">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                         </form>
                 
-                        <!-- Welcome Message -->
                         <span class="navbar-text welcome-text">
                             Welcome to {{name}}
                         </span>

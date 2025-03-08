@@ -4,8 +4,12 @@
     <form action="/add_question/{{ quiz_id }}/{{ name }}" method="POST">
         <div class="input_form">
             <div class="mb-3">
-                <label for="question_statement" class="form-label">Question</label>
+                <label for="question_statement" class="form-label">Question Statement</label>
                 <textarea class="form-control" name="question_statement" id="question_statement" placeholder="Enter the question" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="question_type" class="form-label">Question_type</label>
+                <input type="text" class="form-control" name="question_type" id="question_type" placeholder="Default(MCQ)" required>
             </div>
             <div class="mb-3">
                 <label for="option1" class="form-label">Option 1</label>
