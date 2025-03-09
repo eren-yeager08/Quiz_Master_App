@@ -1,0 +1,39 @@
+{%extends "admin_layout.html"%} <!--Inherited all features-->
+{%block content%}
+<div class="container">
+    {% if users %}
+    <div class="row">
+        <div class="col">
+            <div class="card" style="width: auto;">
+                <div class="card-body">
+                    <h3 class="text-center">Information of Registered Users</h3>
+                    <table class="my_table1">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User_id</th>
+                                <th>Full_name</th>
+                                <th>Email_address</th>   
+                                <th>Qualification</th>                             
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.full_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.qualification }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        <h3 class="text-center mt-4">No registered users yet.</h3>
+    {% endif %}
+</div>
+{%endblock%}
