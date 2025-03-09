@@ -53,10 +53,3 @@ class Score(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
     total_score = db.Column(db.Integer, nullable=False)
-    
-
-
-
-
-   
-

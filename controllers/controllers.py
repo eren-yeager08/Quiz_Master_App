@@ -2,8 +2,8 @@ from flask import Flask,render_template,request,url_for,redirect, session
 from models.models import *
 from flask import current_app as app
 from datetime import datetime,date,timedelta
-import matplotlib  ### first line  - I added those two lones from chatgpt      toa void error mainthread
-matplotlib.use('Agg')   #second line
+import matplotlib 
+matplotlib.use('Agg')   
 import matplotlib.pyplot as plt
 import numpy as np  
 from sqlalchemy import func
@@ -56,6 +56,12 @@ def signup():
 def admin_dashboard(name):
     subjects=get_subjects()
     return render_template("admin_dashboard.html",name=name,subjects=subjects)
+
+@app.route('/user_details/<name>')
+def user_deatils(name):
+    users = User.query.filter(User.id != 1).all()  
+    return render_template('user_details.html', users=users,name=name)
+
 
 @app.route("/subject/<name>",methods=["POST","GET"])
 def add_subject(name):
@@ -126,14 +132,8 @@ def delete_chapter(id,name):
 
 @app.route("/quiz_management/<name>")
 def quiz_management(name):
-    chapters = Chapter.query.all()  
-    chapter_wise_quizzes = {}
-    for chapter in chapters:
-        quizzes = Quiz.query.filter_by(chapter_id=chapter.id).all()
-        if quizzes:
-            chapter_wise_quizzes[chapter] = quizzes
-
-    return render_template("quiz_management.html", name=name, chapter_wise_quizzes=chapter_wise_quizzes)
+    quizzes = Quiz.query.all()
+    return render_template("quiz_management.html", name=name, quizzes=quizzes)
    
 @app.route("/add_quiz/<name>/<chapter_id>", methods=["POST", "GET"])
 def add_quiz(name, chapter_id):
@@ -149,7 +149,6 @@ def add_quiz(name, chapter_id):
         db.session.commit()
         return redirect(url_for("quiz_management", name=name))
 
-    # Fetch all chapters for dropdown
     chapters = Chapter.query.all()
     chapter = Chapter.query.get_or_404(chapter_id)
     return render_template("add_quiz.html", name=name, chapters=chapters, selected_chapter_id=chapter_id, selected_chapter_name=chapter.name)
@@ -232,7 +231,67 @@ def delete_question(id,name):
     db.session.commit()
     return redirect(url_for("quiz_management",name=name))
 
-#common route for user           ----------------------------------------------------User wok from here ----------------------------------------------------
+
+@app.route("/search/<name>", methods=["GET", "POST"])
+def search(name):
+    if request.method == "POST":
+        search_txt = request.form.get("search_txt")
+        if not search_txt:  
+            return redirect(url_for("admin_dashboard", name=name))
+        by_user = search_by_user(search_txt)
+        by_subject = search_by_subject(search_txt)
+        by_quiz = search_by_quiz(search_txt)
+        if by_user:
+            return render_template("user_details.html", name=name, users=by_user)
+        elif by_subject:
+            return render_template("admin_dashboard.html", name=name, subjects=by_subject)
+        elif by_quiz:
+            return render_template("quiz_management.html", name=name, quizzes=by_quiz)
+    return redirect(url_for("admin_dashboard", name=name))
+
+def search_by_user(search_txt):
+    users = User.query.filter(User.full_name.ilike(f"%{search_txt}%")).all()
+    return users
+
+def search_by_subject(search_txt):
+    subjects=Subject.query.filter(Subject.name.ilike(f"%{search_txt}%")).all()
+    return subjects
+
+def search_by_quiz(search_txt):
+    quizzes = Quiz.query.join(Chapter).filter(Chapter.name.ilike(f"%{search_txt}%")).all()
+    return quizzes
+
+@app.route("/admin_summary/<name>")
+def admin_summary(name):
+    plot = get_admin_summary() 
+    plot.savefig("./static/images/admin_summary.jpeg")
+    plot.clf()
+    return render_template("admin_summary.html",name=name)
+
+def get_admin_summary():
+    subjects = Subject.query.all()
+    summary = {}
+    for subject in subjects:
+        top_score = (
+            db.session.query(func.max(Score.total_score))
+            .join(Quiz, Score.quiz_id == Quiz.id)
+            .join(Chapter, Quiz.chapter_id == Chapter.id)
+            .filter(Chapter.subject_id == subject.id)
+            .scalar() or 0)
+        summary[subject.name] = top_score  
+    x_names = list(summary.keys())
+    y_scores = list(summary.values())
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(x_names, y_scores, color="blue" , width=0.4)
+    plt.xlabel("Subjects",fontsize=14, fontweight="bold")
+    plt.ylabel("Top Score",fontsize=14, fontweight="bold")
+    plt.ylim(0, max(y_scores) + 2) 
+    return plt 
+
+#  ----------------------------------------------------User wok from here ----------------------------------------------------
+
+#common route for user          
 @app.route("/user/<uid>/<name>")
 def user_dashboard(uid, name):
     user = User.query.get_or_404(uid)
@@ -265,13 +324,11 @@ def submit_quiz(qid, uid, name):
             return "Time is up! Your answers were not submitted in time.", 403  
 
     total_score = sum(1 for q in questions if request.form.get(f"answer_{q.id}") == getattr(q, q.correct_option))
-
-    timestamp = datetime.now()  # ✅ Store as a datetime object
-
+    timestamp = datetime.now() 
     existing_score = Score.query.filter_by(quiz_id=quiz.id, user_id=user.id).first()
     if existing_score:
         existing_score.total_score = total_score
-        existing_score.timestamp = timestamp  # ✅ Store as datetime
+        existing_score.timestamp = timestamp 
     else:
         new_score = Score(quiz_id=quiz.id, user_id=user.id, total_score=total_score, timestamp=timestamp)
         db.session.add(new_score)
@@ -284,14 +341,31 @@ def view_score(uid, name):
     user = User.query.get_or_404(uid) 
     scores = Score.query.filter_by(user_id=uid).all() 
     quizzes = Quiz.query.filter(Quiz.id.in_([score.quiz_id for score in scores])).all()  
-    dt_time_now = datetime.now().date()  # Convert datetime to date
+    dt_time_now = datetime.now().date() 
 
     return render_template("view_score.html", user=user, quizzes=quizzes, dt_time_now=dt_time_now, name=name, scores=scores)
 
+@app.route("/user_search/<uid>/<name>", methods=["GET", "POST"])
+def search_user(name, uid):
+    user = User.query.get_or_404(uid)  
+    if request.method == "POST":
+        search_txt = request.form.get("search_txt")
+        if not search_txt:  
+            return redirect(url_for("user_dashboard", uid=uid, name=name))
+        subject_by_score = search_subject_by_score(search_txt, int(uid)) 
+        if subject_by_score:
+            return render_template("view_score.html", name=name, user=user, scores=subject_by_score, quizzes=Quiz.query.all())
+    return redirect(url_for("user_dashboard", uid=uid, name=name))
+
+def search_subject_by_score(search_txt, user_id):
+    score_value = int(search_txt)  
+    scores = Score.query.filter_by(user_id=user_id, total_score=score_value).all()
+    return scores
+
 @app.route("/user_summary/<uid>/<name>")
 def user_summary(uid, name):
-    user = User.query.get_or_404(uid)  # Fetch user object
-    plot = get_user_summary(uid)  # Generate summary graph
+    user = User.query.get_or_404(uid) 
+    plot = get_user_summary(uid)
     plot.savefig("./static/images/user_summary.jpeg")
     plot.clf()
     return render_template("user_summary.html", user=user, name=name)
@@ -303,10 +377,10 @@ def get_user_summary(user_id):
         quiz_count = (
             db.session.query(Score)
             .join(Quiz, Score.quiz_id == Quiz.id)
-            .join(Chapter, Quiz.chapter_id == Chapter.id)  # Join Chapter table
+            .join(Chapter, Quiz.chapter_id == Chapter.id) 
             .filter(Chapter.subject_id == subject.id, Score.user_id == user_id)
             .count())
-        summary[subject.name] = quiz_count  # Store subject name instead of ID
+        summary[subject.name] = quiz_count 
     x_names = list(summary.keys())
     y_counts = list(summary.values())
     plt.bar(x_names, y_counts, color="blue", width=0.4)
@@ -315,35 +389,6 @@ def get_user_summary(user_id):
     plt.ylabel("Attempted Quizzes",fontsize=14, fontweight="bold")
     plt.yticks(np.arange(0, max(y_counts) + 1, 1))  
     return plt
-
-@app.route("/admin_summary/<name>")
-def admin_summary(name):
-    plot = get_admin_summary()  # Generate summary graph
-    plot.savefig("./static/images/admin_summary.jpeg")
-    plot.clf()
-    return render_template("admin_summary.html",name=name)
-
-def get_admin_summary():
-    subjects = Subject.query.all()
-    summary = {}
-    for subject in subjects:
-        top_score = (
-            db.session.query(func.max(Score.total_score))
-            .join(Quiz, Score.quiz_id == Quiz.id)
-            .join(Chapter, Quiz.chapter_id == Chapter.id)
-            .filter(Chapter.subject_id == subject.id)
-            .scalar() or 0)
-        summary[subject.name] = top_score  
-    x_names = list(summary.keys())
-    y_scores = list(summary.values())
-
-    plt.figure(figsize=(10, 5))
-    plt.bar(x_names, y_scores, color="blue" , width=0.4)
-    plt.xlabel("Subjects",fontsize=14, fontweight="bold")
-    plt.ylabel("Top Score",fontsize=14, fontweight="bold")
-    plt.ylim(0, max(y_scores) + 2) 
-    return plt  
-
 
 def get_subjects():
     subjects=Subject.query.all()

@@ -1,16 +1,15 @@
 {% extends "admin_layout.html" %}
 {% block content %}
     <div class="container">
-        {% if chapter_wise_quizzes %}
+        {% if quizzes %}
         <div class="row">
-            {% for chapter, quizzes in chapter_wise_quizzes.items() %}
-                {% for quiz in quizzes %} 
+            {% for quiz in quizzes %} 
                 <div class="col">
                     <div class="card" style="width: 25rem">
                         <div class="card-body">
                             <h4 class="center1">
                                 <a href="/edit_quiz/{{ quiz.id }}/{{ name }}">
-                                    Quiz ({{ chapter.name }}) 
+                                    Quiz ({{ quiz.chapter.name }}) 
                                 </a>
                             </h4>
                             
@@ -42,7 +41,6 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             {% endfor %}
         </div>
         {% else %}
