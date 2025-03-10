@@ -24,9 +24,7 @@
                             <tbody>
                                 {% for quiz in quizzes %}
                                 {%if quiz.date_of_quiz >= dt_time_now%}
-                                {% if quiz.no_of_questions > 0 %}
 
-                       
                                 <tr>
                                     <td>{{ loop.index }}</td>
                                     <td>{{ quiz.chapter.subject.name }}</td> 
@@ -39,7 +37,6 @@
                                         class="btn btn-md btn-success px-3 py-2">Start</a>
                                     </td>
                                 </tr>
-                                {%endif%}
                                 {%endif%}
                                 {% endfor %}
                             </tbody>

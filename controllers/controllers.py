@@ -273,11 +273,7 @@ def get_admin_summary():
     summary = {}
     for subject in subjects:
         top_score = (
-            db.session.query(func.max(Score.total_score))
-            .join(Quiz, Score.quiz_id == Quiz.id)
-            .join(Chapter, Quiz.chapter_id == Chapter.id)
-            .filter(Chapter.subject_id == subject.id)
-            .scalar() or 0)
+            db.session.query(func.max(Score.total_score)).join(Quiz, Score.quiz_id == Quiz.id).join(Chapter, Quiz.chapter_id == Chapter.id).filter(Chapter.subject_id == subject.id).scalar() or 0)
         summary[subject.name] = top_score  
     x_names = list(summary.keys())
     y_scores = list(summary.values())
@@ -295,9 +291,10 @@ def get_admin_summary():
 @app.route("/user/<uid>/<name>")
 def user_dashboard(uid, name):
     user = User.query.get_or_404(uid)
-    quizzes = Quiz.query.all()
+    quizzes = Quiz.query.join(Question).group_by(Quiz.id).all()
     dt_time_now = date.today()
     return render_template("user_dashboard.html", user=user, name=name, quizzes=quizzes, dt_time_now=dt_time_now)
+
 
 @app.route("/start_quiz/<qid>/<uid>/<name>")
 def start_quiz(qid, uid, name):
@@ -375,11 +372,7 @@ def get_user_summary(user_id):
     summary = {}
     for subject in subjects:
         quiz_count = (
-            db.session.query(Score)
-            .join(Quiz, Score.quiz_id == Quiz.id)
-            .join(Chapter, Quiz.chapter_id == Chapter.id) 
-            .filter(Chapter.subject_id == subject.id, Score.user_id == user_id)
-            .count())
+            db.session.query(Score).join(Quiz, Score.quiz_id == Quiz.id).join(Chapter, Quiz.chapter_id == Chapter.id) .filter(Chapter.subject_id == subject.id, Score.user_id == user_id).count())
         summary[subject.name] = quiz_count 
     x_names = list(summary.keys())
     y_counts = list(summary.values())
