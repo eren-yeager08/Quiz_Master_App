@@ -317,8 +317,8 @@ def submit_quiz(qid, uid, name):
 
     end_time_str = session.get("quiz_end_time")
     if end_time_str:
-        end_time = datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S")
-        if datetime.now() > end_time:
+        end_time = datetime.fromisoformat(end_time_str)
+        if datetime.now(timezone.utc) > end_time:
             return "Time is up! Your answers were not submitted in time.", 403  
 
     total_score = sum(1 for q in questions if request.form.get(f"answer_{q.id}") == getattr(q, q.correct_option))
