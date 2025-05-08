@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request,url_for,redirect, session
 from models.models import *
 from flask import current_app as app
-from datetime import datetime,date,timedelta
+from datetime import datetime,date,timedelta,timezone
 import matplotlib 
 matplotlib.use('Agg')   
 import matplotlib.pyplot as plt
@@ -303,10 +303,11 @@ def start_quiz(qid, uid, name):
     questions = Question.query.filter_by(quiz_id=qid).all()
 
     hours, minutes = map(int, quiz.time_duration.split(":"))  
-    end_time = datetime.now() + timedelta(hours=hours, minutes=minutes)
-    session["quiz_end_time"] = end_time.strftime("%Y-%m-%d %H:%M:%S")
+    end_time = datetime.now(timezone.utc) + timedelta(hours=hours, minutes=minutes)
+    end_time_str = end_time.isoformat()  # Send in ISO 8601 format with 'Z'
 
-    return render_template("start_quiz.html", user=user,quiz=quiz,questions=questions,name=user.email,end_time=end_time.strftime("%Y-%m-%d %H:%M:%S"))
+    session["quiz_end_time"] = end_time_str
+    return render_template("start_quiz.html", user=user, quiz=quiz, questions=questions, name=user.email, end_time=end_time_str)
 
 @app.route("/submit_quiz/<qid>/<uid>/<name>", methods=["POST"])
 def submit_quiz(qid, uid, name):
