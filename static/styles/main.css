@@ -2,6 +2,7 @@
     text-align: center;
     margin-top: 50px;
     color:rgb(0, 0, 0);
+    background-color:rgb(220, 214, 214) ;
 }
 
 .my_container {
@@ -15,6 +16,7 @@
     margin: auto;
     font-size:20px;
     font-family: Arial, sans-serif;
+    margin-top: 20px;
     
 }
 
@@ -41,6 +43,8 @@
     text-align:center;
     color:solid black;
     margin:auto;
+    background-color:rgb(238, 234, 234) ;
+
 }
 
 .input_form1{
@@ -49,7 +53,7 @@
     height: 290px;
     margin: auto;
     background-color: #f6f6f6;
-    margin-top: 20px;
+    margin-top: 120px;
     padding: 10px;
     border-radius: 10px;
     font-size: 16px;
@@ -64,7 +68,7 @@
     height: 480px;
     margin: auto;
     background-color: #f6f6f6;
-    margin-top: 20px;
+    margin-top: 80px;
     padding: 10px;
     border-radius: 10px;
     font-size: 16px;
