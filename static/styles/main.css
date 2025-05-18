@@ -6,19 +6,30 @@
 }
 
 .my_container {
-    text-align:center;
+    text-align: center;
     border: 1px solid #010201;
     padding: 50px;
     border-radius: 10px;
-    color:rgb(70, 70, 70);
-    background-color: #f6f6f6;
+    color: rgb(255, 247, 247);
     width: 40%;
     margin: auto;
-    font-size:20px;
+    font-size: 20px;
     font-family: Arial, sans-serif;
     margin-top: 20px;
-    
 }
+
+
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
+
+
 
 .button-container {
     display: flex;
@@ -52,7 +63,9 @@
     width: 500px;
     height: 290px;
     margin: auto;
-    background-color: #f6f6f6;
+    color: #ffffff;
+
+    /* background-color: #f6f6f6; */
     margin-top: 120px;
     padding: 10px;
     border-radius: 10px;
@@ -67,7 +80,8 @@
     width: 600px;
     height: 480px;
     margin: auto;
-    background-color: #f6f6f6;
+    color: #ffffff;
+    /* background-color: #f6f6f6; */
     margin-top: 80px;
     padding: 10px;
     border-radius: 10px;
